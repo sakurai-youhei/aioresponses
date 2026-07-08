@@ -39,6 +39,7 @@ from .compat import (
     URL,
     Pattern,
     stream_reader_factory,
+    stream_writer_factory,
     merge_params,
     normalize_url,
     AIOHTTP_VERSION,
@@ -188,6 +189,8 @@ class RequestMatch(object):
         kwargs['traces'] = []
         kwargs['loop'] = loop
         kwargs['session'] = None
+        if AIOHTTP_VERSION >= Version('3.14.0'):
+            kwargs['stream_writer'] = stream_writer_factory(loop)
 
         # We need to initialize headers manually
         _headers = CIMultiDict({hdrs.CONTENT_TYPE: content_type})

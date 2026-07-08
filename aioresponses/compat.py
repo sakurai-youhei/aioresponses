@@ -6,6 +6,7 @@ from urllib.parse import parse_qsl, urlencode
 
 from aiohttp import __version__ as aiohttp_version, StreamReader
 from aiohttp.client_proto import ResponseHandler
+from aiohttp.http_writer import StreamWriter
 from multidict import MultiDict
 from packaging.version import Version
 from yarl import URL
@@ -18,6 +19,13 @@ def stream_reader_factory(  # noqa
 ) -> StreamReader:
     protocol = ResponseHandler(loop=loop)
     return StreamReader(protocol, limit=2 ** 16, loop=loop)
+
+
+def stream_writer_factory(
+    loop: 'Optional[asyncio.AbstractEventLoop]' = None
+) -> StreamWriter:
+    protocol = ResponseHandler(loop=loop)
+    return StreamWriter(protocol, loop)
 
 
 def merge_params(
@@ -44,5 +52,6 @@ __all__ = [
     'AIOHTTP_VERSION',
     'merge_params',
     'stream_reader_factory',
+    'stream_writer_factory',
     'normalize_url',
 ]
